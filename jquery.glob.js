@@ -10,15 +10,17 @@ localized["default"] = localized.en;
 exports.findClosestCulture = function(name) {
     var match;
     if ( !name ) {
-        match = exports.culture || exports.cultures["default"];
+        return exports.culture || exports.cultures["default"];
     }
-    else if ( exports.isPlainObject( name ) ) {
-        match = name;
+    
+    if ( isString( name ) ) {
+         name = name.split( ',' );
     }
-    else {
+    
+    if ( isArray( name ) ) {
         var lang,
             cultures = exports.cultures,
-            list = isArray( name ) ? name : name.split( ',' ),
+            list = name,
             i, l = list.length,
             prioritized = [];
         for ( i = 0; i < l; i++ ) {
@@ -69,6 +71,9 @@ exports.findClosestCulture = function(name) {
             }
             while ( 1 );
         }
+    }
+    else if (typeof name === 'object') {
+        return name;
     }
     return match || null;
 };
@@ -454,6 +459,10 @@ function zeroPad(str, count, left) {
 
 function isArray(obj) {
    return toString.call(obj) === "[object Array]";
+}
+
+function isString(obj) {
+   return toString.call(obj) === "[object String]";
 }
 
 function arrayIndexOf( array, item ) {
