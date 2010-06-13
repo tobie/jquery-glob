@@ -2,22 +2,22 @@
  * jQuery Globalization plugin
  * http://github.com/nje/jquery-glob
  */
-(function($) {
+(function(exports) {
 
 var localized = { en: {} };
 localized["default"] = localized.en;
 
-$.findClosestCulture = function(name) {
+exports.findClosestCulture = function(name) {
     var match;
     if ( !name ) {
-        match = $.culture || $.cultures["default"];
+        match = exports.culture || exports.cultures["default"];
     }
-    else if ( $.isPlainObject( name ) ) {
+    else if ( exports.isPlainObject( name ) ) {
         match = name;
     }
     else {
         var lang,
-            cultures = $.cultures,
+            cultures = exports.cultures,
             list = isArray( name ) ? name : name.split( ',' ),
             i, l = list.length,
             prioritized = [];
@@ -73,14 +73,14 @@ $.findClosestCulture = function(name) {
     return match || null;
 };
 
-$.preferCulture = function(name) {
-    $.culture = $.findClosestCulture( name ) || $.cultures["default"];
+exports.preferCulture = function(name) {
+    exports.culture = exports.findClosestCulture( name ) || exports.cultures["default"];
 };
 
-$.localize = function(key, culture, value) {
+exports.localize = function(key, culture, value) {
     if (typeof culture === 'string') {
         culture = culture || "default";
-        culture = $.cultures[ culture ] || { name: culture };
+        culture = exports.cultures[ culture ] || { name: culture };
     }
     var local = localized[ culture.name ];
     if ( arguments.length === 3 ) {
@@ -106,8 +106,8 @@ $.localize = function(key, culture, value) {
     return typeof value === "undefined" ? null : value;
 };
 
-$.format = function(value, format, culture) {
-    culture = $.findClosestCulture( culture );
+exports.format = function(value, format, culture) {
+    culture = exports.findClosestCulture( culture );
     if ( typeof value === "number" ) {
         value = formatNumber( value, format, culture );
     }
@@ -117,12 +117,12 @@ $.format = function(value, format, culture) {
     return value;
 };
 
-$.parseInt = function(value, radix, culture) {
-    return Math.floor( $.parseFloat( value, radix, culture ) );
+exports.parseInt = function(value, radix, culture) {
+    return Math.floor( exports.parseFloat( value, radix, culture ) );
 };
 
-$.parseFloat = function(value, radix, culture) {
-    culture = $.findClosestCulture( culture );
+exports.parseFloat = function(value, radix, culture) {
+    culture = exports.findClosestCulture( culture );
     var ret = NaN,
         nf = culture.numberFormat;
 
@@ -197,8 +197,8 @@ $.parseFloat = function(value, radix, culture) {
     return ret;
 };
 
-$.parseDate = function(value, formats, culture) {
-    culture = $.findClosestCulture( culture );
+exports.parseDate = function(value, formats, culture) {
+    culture = exports.findClosestCulture( culture );
 
     var date, prop, patterns;
     if ( formats ) {
@@ -248,8 +248,8 @@ $.parseDate = function(value, formats, culture) {
 // it if it does not exist.
 // $.cultures.foo = $.extend(true, $.extend(true, {}, $.cultures['default'], fooCulture), $.cultures.foo)
 
-var cultures = $.cultures = $.cultures || {};
-var en = cultures["default"] = cultures.en = $.extend(true, {
+var cultures = exports.cultures = exports.cultures || {};
+var en = cultures["default"] = cultures.en = exports.extend(true, {
     // A unique name for the culture in the form <language code>-<country/region code>
     name: "en",
     // the name of the culture in the english language
