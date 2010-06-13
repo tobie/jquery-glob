@@ -589,7 +589,7 @@ function formatNumber(value, format, culture) {
             number = expandNumber( number * (current === "P" ? 100 : 1), precision, formatInfo );
             break;
         default:
-            $.error( "Bad number format specifier: " + current );
+            throw "Bad number format specifier: " + current;
     }
 
     var patternParts = /n|\$|-|%/g,
@@ -770,7 +770,7 @@ function expandFormat(cal, format) {
     if ( len === 1 ) {
         pattern = patterns[ format ];
         if ( !pattern ) {
-            $.error( "Invalid date format string '" + format + "'." );
+            throw "Invalid date format string '" + format + "'.";
         }
         format = pattern;
     }
@@ -855,7 +855,7 @@ function getParseRegExp(cal, format) {
                 add = "(\\" + cal["/"] + ")";
                 break;
             default:
-                $.error( "Invalid date format pattern '" + m + "'." );
+                throw "Invalid date format pattern '" + m + "'.";
                 break;
         }
         if ( add ) {
@@ -1258,7 +1258,7 @@ function formatDate(value, format, culture) {
             ret.push( cal["/"] );
             break;
         default:
-            $.error( "Invalid date format pattern '" + current + "'." );
+            throw "Invalid date format pattern '" + current + "'.";
             break;
         }
     }
